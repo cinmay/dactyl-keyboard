@@ -112,6 +112,10 @@ else:
     keyswitch_height = hole_keyswitch_height
     keyswitch_width = hole_keyswitch_width
 
+#if plate_style in ['HS_KAILH_CHOC_V2_HOLE']:
+#    socket = translate(kailh_choc_v2_hotswap_plate, [0, 0, plate_thickness + plate_offset])
+#    plate = union([plate, socket])
+
 if 'HS_' in plate_style:
     symmetry = "asymmetric"
     plate_file = path.join(parts_path, r"hot_swap_plate")
@@ -240,11 +244,97 @@ def single_plate(cylinder_segments=100, side="right"):
 
         plate = difference(plate, [undercut])
 
-    if plate_file is not None:
-        socket = import_file(plate_file)
-        socket = translate(socket, [0, 0, plate_thickness + plate_offset])
-        plate = union([plate, socket])
+    #if plate_file is not None:
+    #    socket = import_file(plate_file)
+    #    socket = translate(socket, [0, 0, plate_thickness + plate_offset])
+    #   plate = union([plate, socket])
 
+    hotswap_hole_height = 1.8
+    hotswap_hole_diameter = 2.9
+    hotswap_hole_1_x_offset = 0.0
+    hotswap_hole_1_y_offset = -5.9
+    hotswap_hole_2_x_offset = -5.0
+    hotswap_hole_2_y_offset = -3.8
+    hotswap_thickness = 3 - hotswap_hole_height
+    hotswap_length = 4.75
+    hotswap_hight = 4.65 
+    hotswap_y_offset = 5.0 / 2
+    hotswap_holes_offset = 2.2
+    hotswap_soldertag_high = 1.7
+    hotswap_solderdag_length = (13.15 - 9.95) / 2
+
+
+    hotswap_box = union([
+        translate(
+            box(hotswap_length + 0.1, hotswap_hight + 0.1, hotswap_thickness + 0.2),
+            (hotswap_length /2, - hotswap_holes_offset /2,0)
+        ),
+        translate(
+            box(hotswap_soldertag_high + 0.1, hotswap_solderdag_length + 0.1, hotswap_thickness + 0.2),
+            (hotswap_length, - hotswap_holes_offset /2,0)
+        ),
+        translate(
+            box(hotswap_length + 0.1, hotswap_hight + 0.1, hotswap_thickness + 0.2),
+            (-hotswap_length/2, hotswap_holes_offset/2 ,0)
+        ),
+        translate(
+            box(hotswap_soldertag_high + 0.1, hotswap_solderdag_length + 0.1, hotswap_thickness + 0.2),
+            (-hotswap_length, hotswap_holes_offset / 2, 0)
+        ),
+    ])
+
+    kailh_v2_switch_depth = 3.5
+    kailh_v2_switch_spring_diameter = 5.0
+    kailh_v2_switch_dummy_pin_diameter = 1.6
+    kaiih_v2_switch_dummy_pin_x_offset = 5.0
+    kailh_v2_switch_dummy_pim_y_offset = 5.15
+    kailh_v2_switch_led_diameter = 3.0
+    kailh_v2_switch_led_x_offset = 0.0
+    kailh_v2_switch_led_y_offset = 4.93
+    kailh_v2_switch_plate_thickness = hotswap_hole_height + hotswap_thickness
+    
+    kailh_holes = [
+        translate(
+            cylinder(kailh_v2_switch_spring_diameter/2, kailh_v2_switch_plate_thickness * 2),
+            (0, 0, 0)
+        ),
+        translate(
+            cylinder(kailh_v2_switch_dummy_pin_diameter/2, kailh_v2_switch_plate_thickness * 2),
+            (kaiih_v2_switch_dummy_pin_x_offset, kailh_v2_switch_dummy_pim_y_offset, 0)
+        ),
+        translate(
+            cylinder(hotswap_hole_diameter/2, hotswap_hole_height + 0.2 ),
+            (hotswap_hole_1_x_offset, hotswap_hole_1_y_offset,  hotswap_hole_height/2 - 0.1) 
+        ),
+        #translate(
+        #     box(hotswap_length, hotswap_hight, hotsawp_thickness + 0.2),
+        #     (hotswap_hole_1_x_offset, hotswap_hole_1_y_offset, -hotsawp_thickness/2 - 0.2) 
+        #),
+       translate(
+           cylinder(hotswap_hole_diameter/2, hotswap_hole_height + 0.2),
+           (hotswap_hole_2_x_offset, hotswap_hole_2_y_offset, hotswap_hole_height/2 - 0.1)
+       ),
+       #translate(
+       #    box(hotswap_length, hotswap_hight, hotsawp_thickness + 0.2),
+       #    (hotswap_hole_2_x_offset, hotswap_hole_2_y_offset, -hotsawp_thickness / 2 - 0.2)
+       #),
+        translate(
+            cylinder(kailh_v2_switch_led_diameter/2, kailh_v2_switch_plate_thickness * 2),
+            (kailh_v2_switch_led_x_offset, kailh_v2_switch_led_y_offset, 0)
+        ),
+        translate(
+            hotswap_box,
+            (- hotswap_y_offset, (hotswap_hole_1_y_offset + hotswap_hole_2_y_offset)/2 ,-hotswap_thickness / 2 - 0.2)
+        ),
+    ]
+
+    shape = box(mount_width, mount_height , kailh_v2_switch_plate_thickness)
+
+
+    shape = translate(shape, (0, 0, mount_thickness - kailh_v2_switch_plate_thickness / 2 - kailh_v2_switch_depth ))
+    #shape = difference(shape, [box(keyswitch_width, keyswitch_height, mount_thickness * 2 +.02)])
+    plate = union([plate, shape])
+    plate = difference(plate, kailh_holes)
 
     if plate_holes:
         half_width = plate_holes_width/2.
