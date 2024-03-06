@@ -271,7 +271,7 @@ def single_plate(cylinder_segments=100, side="right"):
         ),
         translate(
             box(hotswap_soldertag_high + 0.1, hotswap_solderdag_length + 0.1, hotswap_thickness + 0.2),
-            (hotswap_length, - hotswap_holes_offset /2,0)
+            (hotswap_length + hotswap_solderdag_length/2, - hotswap_holes_offset /2,0)
         ),
         translate(
             box(hotswap_length + 0.1, hotswap_hight + 0.1, hotswap_thickness + 0.2),
@@ -279,11 +279,11 @@ def single_plate(cylinder_segments=100, side="right"):
         ),
         translate(
             box(hotswap_soldertag_high + 0.1, hotswap_solderdag_length + 0.1, hotswap_thickness + 0.2),
-            (-hotswap_length, hotswap_holes_offset / 2, 0)
+            (-hotswap_length - hotswap_solderdag_length /2 , hotswap_holes_offset / 2, 0)
         ),
     ])
 
-    kailh_v2_switch_depth = 3.5
+    kailh_v2_switch_depth = 2.4
     kailh_v2_switch_spring_diameter = 5.0
     kailh_v2_switch_dummy_pin_diameter = 1.6
     kaiih_v2_switch_dummy_pin_x_offset = 5.0
@@ -303,16 +303,17 @@ def single_plate(cylinder_segments=100, side="right"):
             (kaiih_v2_switch_dummy_pin_x_offset, kailh_v2_switch_dummy_pim_y_offset, 0)
         ),
         translate(
-            cylinder(hotswap_hole_diameter/2, hotswap_hole_height + 0.2 ),
-            (hotswap_hole_1_x_offset, hotswap_hole_1_y_offset,  hotswap_hole_height/2 - 0.1) 
+            cylinder(hotswap_hole_diameter/2, kailh_v2_switch_plate_thickness + 0.2), 
+            (hotswap_hole_1_x_offset, hotswap_hole_1_y_offset, 
+            (kailh_v2_switch_plate_thickness /2) + 0)  
         ),
         #translate(
         #     box(hotswap_length, hotswap_hight, hotsawp_thickness + 0.2),
         #     (hotswap_hole_1_x_offset, hotswap_hole_1_y_offset, -hotsawp_thickness/2 - 0.2) 
         #),
        translate(
-           cylinder(hotswap_hole_diameter/2, hotswap_hole_height + 0.2),
-           (hotswap_hole_2_x_offset, hotswap_hole_2_y_offset, hotswap_hole_height/2 - 0.1)
+           cylinder(hotswap_hole_diameter/2, kailh_v2_switch_plate_thickness * 2),
+           (hotswap_hole_2_x_offset, hotswap_hole_2_y_offset, kailh_v2_switch_plate_thickness / 2)
        ),
        #translate(
        #    box(hotswap_length, hotswap_hight, hotsawp_thickness + 0.2),
@@ -324,7 +325,8 @@ def single_plate(cylinder_segments=100, side="right"):
         ),
         translate(
             hotswap_box,
-            (- hotswap_y_offset, (hotswap_hole_1_y_offset + hotswap_hole_2_y_offset)/2 ,-hotswap_thickness / 2 - 0.2)
+            (- hotswap_y_offset, (hotswap_hole_1_y_offset + hotswap_hole_2_y_offset)/2 ,
+            - (kailh_v2_switch_plate_thickness/2) + (hotswap_thickness /2) + hotswap_thickness) 
         ),
     ]
 
