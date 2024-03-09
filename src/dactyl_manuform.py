@@ -274,14 +274,18 @@ def single_plate(cylinder_segments=100, side="right"):
             (hotswap_length + hotswap_solderdag_length/2, - hotswap_holes_offset /2,0)
         ),
         translate(
-            box(hotswap_length + 0.1, hotswap_hight + 0.1, hotswap_thickness + 0.2),
-            (-hotswap_length/2, hotswap_holes_offset/2 ,0)
+            box(hotswap_length * 1.5 + 0.1, hotswap_hight + 0.1, hotswap_thickness + 0.2),
+            (-(hotswap_length/2) + ((hotswap_length * 0.5)/2)  , hotswap_holes_offset/2 ,0)
         ),
         translate(
             box(hotswap_soldertag_high + 0.1, hotswap_solderdag_length + 0.1, hotswap_thickness + 0.2),
             (-hotswap_length - hotswap_solderdag_length /2 , hotswap_holes_offset / 2, 0)
         ),
     ])
+
+    hotswap_box = difference(hotswap_box, [translate(cylinder(5/2, hotswap_thickness + 0.2),
+                                                     (hotswap_length/2, (hotswap_hight/2) + (1.45) ,0)
+                                                     )])
 
     kailh_v2_switch_depth = 2.4
     kailh_v2_switch_spring_diameter = 5.0
@@ -319,10 +323,10 @@ def single_plate(cylinder_segments=100, side="right"):
        #    box(hotswap_length, hotswap_hight, hotsawp_thickness + 0.2),
        #    (hotswap_hole_2_x_offset, hotswap_hole_2_y_offset, -hotsawp_thickness / 2 - 0.2)
        #),
-        translate(
-            cylinder(kailh_v2_switch_led_diameter/2, kailh_v2_switch_plate_thickness * 2),
-            (kailh_v2_switch_led_x_offset, kailh_v2_switch_led_y_offset, 0)
-        ),
+       # translate(
+       #     cylinder(kailh_v2_switch_led_diameter/2, kailh_v2_switch_plate_thickness * 2),
+       #     (kailh_v2_switch_led_x_offset, kailh_v2_switch_led_y_offset, 0)
+       # ),
         translate(
             hotswap_box,
             (- hotswap_y_offset, (hotswap_hole_1_y_offset + hotswap_hole_2_y_offset)/2 ,
