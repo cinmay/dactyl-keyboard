@@ -2449,7 +2449,6 @@ def wall_locate3(dx, dy, back=False):
             -wall_z_offset,
         ]
 
-
 def wall_brace(place1, dx1, dy1, post1, place2, dx2, dy2, post2, back=False, skeleton=False, skel_bottom=False):
     debugprint("wall_brace()")
     hulls = []
@@ -2473,13 +2472,13 @@ def wall_brace(place1, dx1, dy1, post1, place2, dx2, dy2, post2, back=False, ske
 
     hulls = []
     if not skeleton:
-        hulls.append(place1(translate(post1, wall_locate2(dx1, dy1))))
+       hulls.append(place1(translate(post1, wall_locate2(dx1, dy1))))
     if not skeleton or skel_bottom:
-        hulls.append(place1(translate(post1, wall_locate3(dx1, dy1, back))))
+       hulls.append(place1(translate(post1, wall_locate3(dx1, dy1, back))))
     if not skeleton:
-        hulls.append(place2(translate(post2, wall_locate2(dx2, dy2))))
+       hulls.append(place2(translate(post2, wall_locate2(dx2, dy2))))
     if not skeleton or skel_bottom:
-        hulls.append(place2(translate(post2, wall_locate3(dx2, dy2, back))))
+       hulls.append(place2(translate(post2, wall_locate3(dx2, dy2, back))))
 
     if len(hulls)>0:
         shape2 = bottom_hull(hulls)
